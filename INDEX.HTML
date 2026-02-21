@@ -3,610 +3,488 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venta de Tarjetas Full Datos - Panel de Usuario</title>
+    <title>MX Gift Cards Outlet</title>
     <style>
-        /* --- ESTILOS MODERNOS Y VIBRANTES (CSS) --- */
         :root {
-            --color-primary: #FF5733; 
-            --color-secondary: #007bff; 
-            --color-success: #28a745;
-            --color-danger: #CC0000;
-            --color-background: #f4f7f6;
-            --color-card-bg: #ffffff;
-            --color-text: #333;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--color-background);
-            color: var(--color-text);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            background-color: var(--color-card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: var(--color-danger);
-            text-align: center;
-            border-bottom: 3px solid var(--color-primary);
-            padding-bottom: 15px;
-            margin-bottom: 40px;
-            font-size: 2.5em;
-        }
-        h3 {
-            color: var(--color-secondary);
-            margin-top: 25px;
-            border-left: 5px solid var(--color-secondary);
-            padding-left: 10px;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #10b981; /* Verde venta */
+            --accent-hover: #059669;
+            --danger: #ef4444;
+            --badge-bg: #ef4444;
+            --whatsapp: #25D366;
         }
 
-        /* Panel de Saldo */
-        #saldo-panel {
-            background-color: #e6f7ff;
-            border: 1px solid var(--color-secondary);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { background-color: var(--bg-color); color: var(--text-primary); padding-bottom: 50px; }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        #saldo-display {
-            font-size: 1.5em;
-            color: var(--color-secondary);
-        }
-        #recargar-btn, #logout-btn {
-            background-color: var(--color-secondary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-left: 10px;
-        }
-        #recargar-btn:hover { background-color: #0056b3; }
-        #logout-btn { background-color: #777; }
-        #logout-btn:hover { background-color: #555; }
 
-        /* Diseño de Tarjetas de Producto */
-        #productos-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            justify-content: center;
-        }
-        .producto-card {
-            background: var(--color-card-bg);
-            border: 1px solid var(--color-danger); 
-            border-radius: 10px;
-            padding: 15px;
-            width: 220px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-        }
-        .producto-card img {
-            width: 80%;
-            height: auto;
+        .logo { font-size: 1.5rem; font-weight: bold; color: white; }
+        .logo span { color: var(--accent); }
+        
+        .nav-actions button {
+            background: none;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
             border-radius: 6px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.2s;
         }
-        .producto-card button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+
+        .nav-actions button:hover { background-color: var(--card-bg); border-color: var(--accent); color: var(--accent); }
+
+        /* Hero */
+        .hero { text-align: center; padding: 3rem 1rem; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .hero p { color: var(--text-secondary); }
+
+        /* Grid de Productos */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
         }
+
+        /* Tarjeta de Producto */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        .product-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--badge-bg);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .card-visual {
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            position: relative;
+        }
+        
+        .card-visual .bank-name { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px;}
+        .card-visual .card-value { font-size: 1.2rem; opacity: 0.95; margin-top: 5px; }
+
+        /* Estilos de Bancos */
+        .banamex { background: linear-gradient(135deg, #004a8f 0%, #00ace6 100%); }
+        .bbva { background: linear-gradient(135deg, #004481 0%, #2dcccd 100%); }
+        .santander { background: linear-gradient(135deg, #ec0000 0%, #ff4d4d 100%); }
+        .hsbc { background: linear-gradient(135deg, #db0011 0%, #ffffff 50%, #db0011 100%); color: #000; text-shadow: none; }
+        .banorte { background: linear-gradient(135deg, #eb0029 0%, #b3001f 100%); }
+        .scotiabank { background: linear-gradient(135deg, #ec111a 0%, #ff5e62 100%); }
+        .azteca { background: linear-gradient(135deg, #256a3e 0%, #85bb2f 100%); }
+        .inbursa { background: linear-gradient(135deg, #0055a5 0%, #003366 100%); }
+        .spin { background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%); }
+
+        .card-info { padding: 1.5rem; }
+        
+        .price-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .new-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .btn-add {
+            width: 100%;
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background-color: var(--accent-hover); color: white; }
 
         /* Modales */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1001; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0,0,0,0.8);
-            padding-top: 60px;
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
+
         .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto; 
-            padding: 30px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 450px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        .modal-content h2 { color: var(--color-primary); }
-        .modal-content input, .modal-content select {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
             width: 90%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            max-width: 500px;
+            position: relative;
+            border: 1px solid #334155;
+            animation: fadeIn 0.3s ease;
         }
-        .modal-content button {
-            background-color: var(--color-success);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            margin-top: 15px;
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .close-modal {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 1.5rem;
             cursor: pointer;
+            color: var(--text-secondary);
         }
-        .modal-content button:hover { background-color: #1e7e34; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #334155;
+        }
+        .btn-remove { color: var(--danger); background: none; border: none; cursor: pointer; }
+        
+        .cart-total {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            color: var(--accent);
+        }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: white;
+            border-radius: 6px;
+        }
+        .btn-primary {
+            width: 100%; background: var(--accent); color: #0f172a; padding: 0.8rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
+        }
+        .btn-primary:hover { background: var(--accent-hover); color: white; }
+
+        /* Estilos específicos para el Modal de Pago */
+        .payment-info {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+        .bank-details { font-family: monospace; font-size: 1.1rem; color: var(--accent); letter-spacing: 1px; margin: 5px 0; word-break: break-all; }
+        .btn-whatsapp {
+            background-color: var(--whatsapp);
+            color: white;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        .btn-whatsapp:hover { background-color: #1ebc57; }
+
+        #notification {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--accent); color: #0f172a; padding: 1rem; font-weight: bold;
+            border-radius: 6px; display: none; z-index: 2000;
+        }
     </style>
 </head>
 <body>
 
-<div id="loginModal" class="modal">
-  <div class="modal-content">
-    <h2>🔑 Acceso al Panel de Control</h2>
-    <p>Ingresa tus credenciales. Si el correo no existe, **se registrará automáticamente**.</p>
-    <input type="text" id="login-email" placeholder="Correo Electrónico" required>
-    <input type="password" id="login-password" placeholder="Contraseña" required>
-    <p id="login-error" style="color: var(--color-danger); font-weight: bold;"></p>
-    <button onclick="handleAuth()">Registrarse / Acceder</button>
-  </div>
-</div>
-
-<div id="recargaModal" class="modal">
-    <div class="modal-content">
-        <h2>💵 Recargar Saldo al Panel</h2>
-        <p>Selecciona tu forma de pago. (Monto fijo de recarga: \$10,000 MXN).</p>
-        
-        <label for="recarga-forma-pago" style="display: block; text-align: left; margin-top: 15px;">Forma de Pago:</label>
-        <select id="recarga-forma-pago">
-            <option value="TDC">Tarjeta de Crédito / Débito</option>
-            <option value="Transferencia">Transferencia MX (SPEI)</option>
-        </select>
-        
-        <label for="recarga-monto" style="display: block; text-align: left; margin-top: 15px;">Monto Fijo a Recargar:</label>
-        <input type="text" id="recarga-monto" value="10000" disabled>
-
-        <button onclick="procesarRecarga()">Pagar Recarga</button>
-        <p id="recarga-resultado" style="margin-top: 15px;"></p>
-    </div>
-</div>
-
-
-<div class="container">
-    <h1>🚨 Venta de Tarjetas FULL DATOS</h1>
-    
-    <div id="saldo-panel">
-        <div>
-            Usuario: <span id="email-display" style="font-size: 1.1em; font-weight: 700;">Invitado</span> | 
-            Saldo Disponible: 
-            <span id="saldo-display">$0.00 MXN</span>
+    <header>
+        <div class="logo">MX <span>OUTLET</span></div>
+        <div class="nav-actions">
+            <button onclick="openLogin()">👤 Cuenta</button>
+            <button onclick="toggleCart()">🛒 Carrito (<span id="cart-count">0</span>)</button>
         </div>
-        <div>
-            <button id="recargar-btn" onclick="mostrarModalRecarga()">
-                Recargar Saldo
-            </button>
-             <button id="logout-btn" onclick="cerrarSesion()">
-                Cerrar Sesión
-            </button>
-        </div>
-    </div>
+    </header>
 
-    <h3>Catálogo de Tarjetas "Full Datos" con Saldo Verificado</h3>
-    <p>El **Costo de Compra** es el precio del servicio. Necesitas tener saldo en tu panel para comprar.</p>
-    <div id="productos-container">
-        </div>
+    <section class="hero">
+        <h1>Ofertas en Saldos Bancarios</h1>
+        <p>Ahorra hasta un 80% en tus tarjetas de regalo. Entrega inmediata tras verificar pago.</p>
+    </section>
 
-    <div id="seccion-pago" style="display:none;">
-        <h3>Procesar Compra</h3>
-        <p>Producto seleccionado (Costo): <span id="pago-monto" style="color:var(--color-danger); font-weight:bold;">$0.00 MXN</span></p>
-
-        <div id="tarjeta-input-group">
-            <h4>Datos de la Tarjeta para Proceso 3D Secure</h4>
-            <div id="tipo-tarjeta-display" style="text-align:right; font-weight:bold; color:var(--color-secondary); margin-bottom: 5px;"></div>
-            
-            <label for="numero-tarjeta">Número de Tarjeta (Para 3D Secure):</label>
-            <input type="text" id="numero-tarjeta" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required onkeyup="detectarTipoTarjeta()">
-            
-            <label for="nombre-tarjeta">Nombre del Titular:</label>
-            <input type="text" id="nombre-tarjeta" placeholder="Como aparece en la tarjeta" required>
-
-            <div class="tarjeta-split">
-                <div>
-                    <label for="expiracion">Vencimiento (MM/AA):</label>
-                    <input type="text" id="expiracion" placeholder="MM/AA" maxlength="5" required>
-                </div>
-                <div>
-                    <label for="cvv">CVV:</label>
-                    <input type="text" id="cvv" placeholder="123" maxlength="4" required>
-                </div>
+    <div class="container">
+        <div class="product-grid" id="product-list">
             </div>
-            
-            <button id="pagar-btn" style="background-color: var(--color-primary);" onclick="procesarCompra()">Confirmar Compra con Saldo de Panel</button>
-        </div>
-        
-        <div class="trust-seal">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Norton-Secured.svg/256px-Norton-Secured.svg.png" alt="Norton Secured Logo">
-            Transacción 100% Segura. Certificado SSL por VeriSign.
-        </div>
-        
-        <div id="pago-resultado">
-            Esperando confirmación...
+    </div>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleCart()">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">Total a Pagar: $<span id="cart-total-amount">0.00</span> MXN</div>
+            <button class="btn-primary" style="margin-top: 1rem;" onclick="openPaymentModal()">Proceder al Pago</button>
         </div>
     </div>
-</div>
 
-<div id="loading-overlay">
-    <div class="loader"></div>
-    <div id="loading-title">Verificación de Seguridad 3D Secure...</div>
-    <div>Redirigiendo al portal de autenticación de tu banco.</div>
-</div>
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLogin()">&times;</span>
+            <h2>Ingresar</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">Ingresa tu correo para recibir los códigos.</p>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="email" required placeholder="tu@correo.com">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" placeholder="********">
+                </div>
+                <button type="submit" class="btn-primary">Continuar</button>
+            </form>
+        </div>
+    </div>
 
-<script>
-    // -----------------------------------------------------------
-    // 🚨🚨 CONFIGURACIÓN DE TU SERVIDOR (DEBES IMPLEMENTAR ESTO) 🚨🚨
-    // -----------------------------------------------------------
-    const BASE_URL = 'https://tuservidor.com/api'; // <--- ¡CAMBIA ESTO!
-    const AUTH_URL = `${BASE_URL}/auth`; // Endpoint unificado para Login/Register
-    const LOGOUT_URL = `${BASE_URL}/logout`;
-    const GET_BALANCE_URL = `${BASE_URL}/balance`;
-    const RECHARGE_URL = `${BASE_URL}/recharge`;
-    const PURCHASE_URL = `${BASE_URL}/purchase`;
-    // -----------------------------------------------------------
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePaymentModal()">&times;</span>
+            <h2 style="text-align:center; color: var(--accent);">Instrucciones de Pago</h2>
+            <p style="text-align:center; margin-top:10px; color: var(--text-secondary);">
+                Realiza la transferencia del monto total y envía el comprobante para liberar tus códigos.
+            </p>
 
-    let userToken = sessionStorage.getItem('authToken');
-    let emailRegistrado = sessionStorage.getItem('userEmail') || '';
-    let saldoUsuario = parseFloat(sessionStorage.getItem('userBalance')) || 0; 
-    let montoCompra = 0; 
-    let tipoTarjetaDetectado = '';
-    
-    // Al no requerir verificación, solo necesitamos guardar las credenciales en la UI
-    let tempEmail = ''; 
+            <div class="payment-info">
+                <p>Banco:</p>
+                <strong>Klar</strong>
+                <hr style="border-color:#334155; margin: 10px 0;">
+                <p>CLABE Interbancaria:</p>
+                <div class="bank-details" onclick="copyClabe()">661180007514078990</div>
+                <small style="color:var(--text-secondary)">(Toca el número para copiar)</small>
+            </div>
 
-    const productos = [
-        { nombre: "TDC Full Datos Citibanamex", saldo: 500.00, costo: 100.00, imagen: 'img/citibanamex.png' },
-        { nombre: "TDC Full Datos Santander", saldo: 1000.00, costo: 180.00, imagen: 'img/santander.png' },
-        { nombre: "TDC Full Datos BBVA", saldo: 2500.00, costo: 250.00, imagen: 'img/bbva.png' },
-        { nombre: "TDC Full Datos HSBC", saldo: 5000.00, costo: 350.00, imagen: 'img/hsbc.png' }, 
-        { nombre: "TDC Full Datos Banorte", saldo: 10000.00, costo: 500.00, imagen: 'img/banorte.png' },
-        { nombre: "TDC Full Datos Scotiabank", saldo: 25000.00, costo: 800.00, imagen: 'img/scotiabank.png' }, 
-        { nombre: "TDC Full Datos BanCoppel", saldo: 50000.00, costo: 900.00, imagen: 'img/bancoppel.png' }
-    ];
+            <div style="text-align: center; margin: 1rem 0;">
+                <strong>Total a transferir: <span id="final-total" style="color:white; font-size:1.2rem;">$0.00</span> MXN</strong>
+            </div>
 
-    // --- Funciones de Sesión (Registro y Login Directo) ---
-
-    async function handleAuth() {
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value;
-        const errorDiv = document.getElementById('login-error');
-        errorDiv.textContent = '';
-
-        if (!validarEmail(email) || password.length < 4) {
-            errorDiv.textContent = '❌ Por favor, ingresa credenciales válidas (mínimo 4 caracteres para la clave).';
-            return;
-        }
-
-        tempEmail = email; // Usado para mostrar en la UI
-        errorDiv.textContent = 'Procesando...';
-
-        try {
-            // Envía las credenciales. El servidor debe decidir si es registro (nuevo usuario) o login (existente).
-            const response = await fetch(AUTH_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+            <a id="whatsapp-link" href="#" target="_blank" class="btn-whatsapp">
+                📱 Enviar Comprobante por WhatsApp
+            </a>
             
-            const data = await response.json();
-            errorDiv.textContent = ''; // Limpiar mensaje de "Procesando"
+            <button class="btn-remove" style="width:100%; margin-top:10px; color:var(--text-secondary)" onclick="closePaymentModal()">Cancelar</button>
+        </div>
+    </div>
 
-            if (response.ok) {
-                
-                if (data.token) {
-                    // Login o Registro completado con éxito
-                    alert(data.message || '✅ Sesión iniciada con éxito.');
-                    completarLogin(data.token, data.balance);
-                } else {
-                    errorDiv.textContent = `❌ ${data.message || 'Respuesta de servidor inválida.'}`;
-                }
+    <div id="notification"></div>
 
-            } else {
-                // Error de servidor (ej: 401 Unauthorized, 400 Bad Request)
-                errorDiv.textContent = `❌ Error: ${data.message || 'Credenciales incorrectas o error en el servidor.'}`;
-            }
-        } catch (error) {
-            console.error('Error al intentar autenticar:', error);
-            errorDiv.textContent = '❌ Error de conexión de red con el servidor. Intenta de nuevo.';
-        }
-    }
-    
-    function completarLogin(token, balance) {
-        userToken = token;
-        emailRegistrado = tempEmail;
-        saldoUsuario = balance || 0;
+    <script>
+        // --- DATA ---
+        // Precios: 500 saldo = 100 costo
+        const products = [
+            { id: 1, bank: "Banamex", value: 500, price: 100, style: "banamex" },
+            { id: 2, bank: "Banamex", value: 1000, price: 200, style: "banamex" },
+            { id: 3, bank: "BBVA", value: 500, price: 100, style: "bbva" },
+            { id: 4, bank: "BBVA", value: 1500, price: 300, style: "bbva" },
+            { id: 5, bank: "Santander", value: 1000, price: 200, style: "santander" },
+            { id: 6, bank: "Banorte", value: 500, price: 100, style: "banorte" },
+            { id: 7, bank: "Banorte", value: 2000, price: 400, style: "banorte" },
+            { id: 8, bank: "Azteca", value: 500, price: 100, style: "azteca" },
+            { id: 9, bank: "Azteca", value: 1000, price: 200, style: "azteca" },
+            { id: 10, bank: "Spin OXXO", value: 500, price: 100, style: "spin" },
+            { id: 11, bank: "Scotiabank", value: 1500, price: 300, style: "scotiabank" },
+            { id: 12, bank: "Inbursa", value: 2500, price: 500, style: "inbursa" },
+            { id: 13, bank: "HSBC", value: 1000, price: 200, style: "hsbc" }
+        ];
 
-        sessionStorage.setItem('authToken', userToken);
-        sessionStorage.setItem('userEmail', emailRegistrado);
-        sessionStorage.setItem('userBalance', saldoUsuario.toFixed(2));
+        let cart = JSON.parse(localStorage.getItem('mx_cart')) || [];
+        let userEmail = localStorage.getItem('mx_user') || null;
 
-        document.getElementById('loginModal').style.display = 'none';
-        cargarEstadoInicial();
-    }
-
-    async function cerrarSesion() {
-        if (!confirm('¿Estás seguro de que quieres cerrar la sesión?')) return;
-
-        try {
-            // Notificar al servidor para invalidar el token
-            await fetch(LOGOUT_URL, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${userToken}` }
-            });
-        } catch (error) {
-            console.warn('Advertencia: Falló la notificación al servidor, cerrando sesión local.');
-        }
-
-        userToken = null;
-        emailRegistrado = '';
-        saldoUsuario = 0;
-        montoCompra = 0;
-
-        sessionStorage.clear();
-
-        document.getElementById('seccion-pago').style.display = 'none';
-        document.getElementById('loginModal').style.display = 'block';
-        document.getElementById('login-email').value = '';
-        document.getElementById('login-password').value = '';
-
-        cargarEstadoInicial();
-    }
-
-    async function cargarEstadoInicial() {
-        if (sessionStorage.getItem('authToken')) {
-            userToken = sessionStorage.getItem('authToken');
-            emailRegistrado = sessionStorage.getItem('userEmail');
-            
-            // **Paso 1: Verificar el token con el servidor y obtener saldo**
-            try {
-                const response = await fetch(GET_BALANCE_URL, {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${userToken}` }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    saldoUsuario = data.balance;
-                    sessionStorage.setItem('userBalance', saldoUsuario.toFixed(2));
-                } else if (response.status === 401) {
-                    // Token expirado o inválido, forzar logout
-                    cerrarSesion();
-                    return;
-                }
-            } catch (error) {
-                // Error de red, usar saldo local guardado
-                saldoUsuario = parseFloat(sessionStorage.getItem('userBalance')) || 0;
-            }
-
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('email-display').textContent = emailRegistrado;
-        } else {
-            document.getElementById('loginModal').style.display = 'block';
-            document.getElementById('email-display').textContent = 'Invitado';
-        }
-        actualizarSaldoUI();
-    }
-
-    // --- Funciones de Saldo (Recarga REAL al Servidor) ---
-
-    function actualizarSaldoUI() {
-        document.getElementById('saldo-display').textContent = formatoMoneda(saldoUsuario);
-        sessionStorage.setItem('userBalance', saldoUsuario.toFixed(2));
-        renderizarProductos(); 
-    }
-    
-    function mostrarModalRecarga() {
-        if (!userToken) {
-            alert('Debes iniciar sesión para recargar saldo.');
-            document.getElementById('loginModal').style.display = 'block';
-            return;
-        }
-        document.getElementById('recargaModal').style.display = 'block';
-        document.getElementById('recarga-resultado').textContent = '';
-    }
-
-    async function procesarRecarga() {
-        const formaPago = document.getElementById('recarga-forma-pago').value;
-        const resultadoDiv = document.getElementById('recarga-resultado');
-        const montoRecarga = 10000;
-
-        resultadoDiv.innerHTML = `<span style="color: var(--color-secondary);">Procesando pago por ${formaPago}...</span>`;
-
-        try {
-            // **Paso 1: Envío real al servidor para registrar y procesar la recarga**
-            const response = await fetch(RECHARGE_URL, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${userToken}` 
-                },
-                body: JSON.stringify({ amount: montoRecarga, paymentMethod: formaPago })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // El servidor debe devolver el nuevo saldo tras registrar el pago
-                saldoUsuario = data.newBalance;
-                actualizarSaldoUI(); 
-
-                resultadoDiv.innerHTML = `<span style="color: var(--color-success); font-weight: bold;">✅ ÉXITO: ${formatoMoneda(montoRecarga)} MXN añadidos. Nuevo Saldo: ${formatoMoneda(saldoUsuario)}</span>`;
-                
-                setTimeout(() => {
-                    document.getElementById('recargaModal').style.display = 'none';
-                }, 2000);
-
-            } else {
-                resultadoDiv.innerHTML = `<span style="color: var(--color-danger); font-weight: bold;">❌ RECHAZADO: ${data.message || 'Fallo de verificación en el pago.'}</span>`;
-            }
-        } catch (error) {
-            console.error('Error al procesar recarga:', error);
-            resultadoDiv.innerHTML = '<span style="color: var(--color-danger); font-weight: bold;">❌ Error de conexión de red. Intenta de nuevo.</span>';
-        }
-    }
-
-    // --- Funciones de Compra (Conexión REAL al Servidor) ---
-    
-    async function procesarCompra() {
-        // ... (Validaciones de tarjeta omitidas para brevedad, pero deberían estar aquí) ...
-        const resultadoDiv = document.getElementById('pago-resultado');
-        const overlay = document.getElementById('loading-overlay');
-        overlay.style.display = 'flex';
-        resultadoDiv.textContent = 'Iniciando proceso de autenticación 3D Secure...';
-        
-        // Simulación de tiempo de 3D Secure (5 segundos)
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        overlay.style.display = 'none';
-        resultadoDiv.textContent = '3D Secure completado. Finalizando compra...';
-
-        try {
-            // **Paso 1: Enviar la solicitud de compra al servidor**
-            const response = await fetch(PURCHASE_URL, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${userToken}` 
-                },
-                body: JSON.stringify({ 
-                    cost: montoCompra, 
-                    // Enviar datos de la TDC para procesar
-                    card_number: document.getElementById('numero-tarjeta').value,
-                    card_holder: document.getElementById('nombre-tarjeta').value,
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // El servidor descuenta el saldo y registra la venta
-                saldoUsuario = data.newBalance;
-                actualizarSaldoUI();
-                montoCompra = 0; // Limpiar carrito
-                document.getElementById('seccion-pago').style.display = 'none';
-
-                resultadoDiv.innerHTML = `
-                    <span style="color: var(--color-success); font-size: 1.1em; font-weight: bold;">
-                        ✅ COMPRA EXITOSA!
-                    </span>
-                    <br>
-                    <span style="font-size: 0.9em; color: var(--color-text);">
-                        Tu saldo ha sido descontado. Los datos de la tarjeta comprada han sido enviados a tu correo: ${emailRegistrado}.
-                    </span>
-                `;
-                alert('✅ Compra Exitosa. Revisa tu correo.');
-
-            } else {
-                resultadoDiv.innerHTML = `
-                    <span style="color: var(--color-danger); font-size: 1.1em; font-weight: bold;">
-                        ❌ TRANSACCIÓN RECHAZADA.
-                    </span>
-                    <br>
-                    <span style="font-size: 0.9em; color: var(--color-text);">
-                        ${data.message || 'Fallo en la validación o saldo insuficiente.'}
-                    </span>
-                `;
-            }
-        } catch (error) {
-            console.error('Error en el proceso de compra:', error);
-            resultadoDiv.innerHTML = '<span style="color: var(--color-danger); font-weight: bold;">❌ Error de red al finalizar la compra.</span>';
-        }
-    }
-    
-    // --- Funciones de Utilidad y Renderizado (Mantenidas) ---
-
-    function formatoMoneda(valor) {
-        return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor);
-    }
-    
-    function validarEmail(email) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
-
-    function renderizarProductos() {
-        const container = document.getElementById('productos-container');
-        container.innerHTML = '';
-        
-        productos.forEach((prod) => {
-            const card = document.createElement('div');
-            card.className = 'producto-card';
-
-            const puedeComprar = saldoUsuario >= prod.costo;
-            const btnDisabled = puedeComprar ? '' : 'disabled';
-            const btnTexto = puedeComprar ? 'Comprar' : `Saldo Insuficiente`;
-
-            card.innerHTML = `
-                <img src="${prod.imagen}" alt="${prod.nombre}" onerror="this.onerror=null;this.src='img/default.png';">
-                <h4>${prod.nombre}</h4>
-                <div class="descripcion">Saldo Disponible: <br>${formatoMoneda(prod.saldo)} MXN</div>
-                <p class="costo">Costo de Compra: <br>${formatoMoneda(prod.costo)} MXN</p>
-                <button ${btnDisabled} onclick="agregarAlCarrito(${prod.costo}, '${prod.nombre}')">${btnTexto}</button>
+        // --- RENDER PRODUCTS ---
+        const productList = document.getElementById('product-list');
+        products.forEach(p => {
+            productList.innerHTML += `
+                <div class="product-card">
+                    <div class="discount-badge">-80% OFF</div>
+                    <div class="card-visual ${p.style}">
+                        <div class="bank-name">${p.bank}</div>
+                        <div class="card-value">Saldo: $${p.value}</div>
+                    </div>
+                    <div class="card-info">
+                        <h3 style="font-size:1.1rem">Gift Card ${p.bank} - $${p.value}</h3>
+                        <div class="price-container">
+                            <span class="old-price">Valor: $${p.value}</span>
+                            <span class="new-price">$${p.price} MXN</span>
+                        </div>
+                        <button class="btn-add" onclick="addToCart(${p.id})">COMPRAR AHORA</button>
+                    </div>
+                </div>
             `;
-            container.appendChild(card);
         });
-    }
 
-    function agregarAlCarrito(precio, nombreProducto) {
-        if (!userToken) {
-            alert('Debes iniciar sesión para realizar compras.');
-            document.getElementById('loginModal').style.display = 'block';
-            return;
+        // --- CART LOGIC ---
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            saveCart();
+            updateCartUI();
+            showNotification(`Agregado: ${product.bank} $${product.value}`);
         }
 
-        if (montoCompra > 0) {
-            alert("⚠️ Ya tienes un producto en el carrito. Finaliza la compra o recarga la página para elegir otro.");
-            return;
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
         }
 
-        if (saldoUsuario < precio) {
-             alert(`❌ Saldo insuficiente en el panel. Necesitas ${formatoMoneda(precio)}, tienes ${formatoMoneda(saldoUsuario)}.`);
-             return;
+        function saveCart() {
+            localStorage.setItem('mx_cart', JSON.stringify(cart));
+            updateCartCount();
         }
 
-        montoCompra = precio;
-        
-        document.getElementById('pago-monto').textContent = formatoMoneda(precio);
-        document.getElementById('pago-resultado').innerHTML = `✅ **${nombreProducto}** añadido. <br> Proceder al 3D Secure para finalizar la adquisición.`;
-        document.getElementById('seccion-pago').style.display = 'block';
-    }
-    
-    function detectarTipoTarjeta() { 
-        const input = document.getElementById('numero-tarjeta');
-        const num = input.value.replace(/\s/g, '');
-        const display = document.getElementById('tipo-tarjeta-display');
-        const formattedNum = num.replace(/(\d{4})/g, '$1 ').trim();
-        input.value = formattedNum;
-        tipoTarjetaDetectado = '';
-        if (num.length >= 4) {
-            if (num.startsWith('4')) { tipoTarjetaDetectado = 'VISA'; } 
-            else if (num.startsWith('5')) { tipoTarjetaDetectado = 'MASTERCARD'; } 
-            else { tipoTarjetaDetectado = 'No compatible / Otro'; }
+        function updateCartCount() {
+            document.getElementById('cart-count').innerText = cart.length;
         }
-        display.textContent = tipoTarjetaDetectado;
-    }
 
-    // Inicializar la aplicación al cargar la página
-    window.onload = function() {
-        cargarEstadoInicial();
-    };
-</script>
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total-amount');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 1rem;">El carrito está vacío</p>';
+                totalEl.innerText = "0.00";
+                return;
+            }
 
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.bank} (Saldo $${item.value})</strong><br>
+                            <small class="new-price" style="font-size:1rem">$${item.price} MXN</small>
+                        </div>
+                        <button class="btn-remove" onclick="removeFromCart(${index})">Eliminar</button>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = html;
+            totalEl.innerText = total.toFixed(2);
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+            if(modal.style.display === 'flex') updateCartUI();
+        }
+
+        // --- PAYMENT FLOW ---
+        function openPaymentModal() {
+            if (!userEmail) {
+                toggleCart();
+                openLogin();
+                return;
+            }
+            if (cart.length === 0) return;
+
+            const totalAmount = document.getElementById('cart-total-amount').innerText;
+            
+            // Configurar datos del modal de pago
+            document.getElementById('final-total').innerText = totalAmount;
+            
+            // Link de WhatsApp dinámico
+            const waNumber = "12296558023";
+            const message = `Hola, quiero confirmar mi pedido de Gift Cards.\nMi correo es: ${userEmail}\nMonto a pagar: $${totalAmount} MXN.\nAdjunto mi comprobante de pago a la cuenta NVIO terminación 9364.`;
+            const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+            
+            document.getElementById('whatsapp-link').href = waLink;
+
+            // Cambiar modales
+            document.getElementById('cart-modal').style.display = 'none';
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+
+        function copyClabe() {
+            const clabe = "710969000142909364";
+            navigator.clipboard.writeText(clabe).then(() => {
+                showNotification("CLABE copiada al portapapeles");
+            });
+        }
+
+        // --- LOGIN / REGISTER ---
+        function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+        function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            userEmail = email;
+            localStorage.setItem('mx_user', email); 
+            showNotification(`Conectado como ${email}`);
+            closeLogin();
+            if(cart.length > 0) toggleCart();
+        }
+
+        function showNotification(msg) {
+            const notif = document.getElementById('notification');
+            notif.innerText = msg;
+            notif.style.display = 'block';
+            setTimeout(() => { notif.style.display = 'none'; }, 3000);
+        }
+
+        // Init
+        updateCartCount();
+    </script>
 </body>
 </html>
